@@ -5,8 +5,6 @@
 
 import unittest
 
-from DivineVideo import DivineVideo
-
 
 class TestDivinevideo(unittest.TestCase):
     """Tests for `DivineVideo` package."""

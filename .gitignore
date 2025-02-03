@@ -110,5 +110,5 @@ ENV/
 
 data/audio/input/*
 data/audio/output/*
-data/video/intput/*
+data/video/input/*
 data/video/output/*

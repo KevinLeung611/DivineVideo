@@ -1,0 +1,8 @@
+video:
+    input: DeepSeek.mp4
+    type: mp4
+
+whisper:
+    model: turbo
+    language: en
+    output_format: srt
