@@ -116,3 +116,5 @@ data/srt/input/*
 data/srt/output/*
 
 .DS_Store
+
+!.gitkeep
