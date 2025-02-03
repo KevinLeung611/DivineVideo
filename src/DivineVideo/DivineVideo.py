@@ -1,7 +1,35 @@
-"""Main module."""
+import os
 
-# Step 1: 读取视频文件，将视频文件的语音提取并生成 srt 文件
+import audio_extraction
+import merge_subtitle
+import translate
+import whisper_utils
+from common.path_constants import data_dir
+from utils import sanitize_utils
+from utils import yaml_reader
 
-# Step 2: 翻译 srt 文件并生成翻译后的 srt 文件
+video_input_name = yaml_reader.load_config()["video"]["input"]
+file_base_name = video_input_name.split(".")[0]
 
-# Step 3: 将翻译后的 srt 文件合并到视频中
+video_input = os.path.join(data_dir, "video", "input", video_input_name)
+video_output = os.path.join(data_dir, "video", "output", video_input_name)
+
+audio_input = os.path.join(data_dir, "audio", "input", file_base_name + ".wav")
+audio_output = os.path.join(data_dir, "audio", "output", file_base_name + ".wav")
+
+srt_input = os.path.join(data_dir, "srt", "input", file_base_name + ".srt")
+srt_output = os.path.join(data_dir, "srt", "output", file_base_name + ".srt")
+
+audio_extraction.extract_audio(video_input, audio_input)
+
+whisper_utils.generate_audio_srt(audio_input, os.path.join(data_dir, "srt", "input"))
+
+sanitized_result = sanitize_utils.sanitize_srt_file(srt_input)
+
+translated_srt = translate.translate_srt(sanitized_result)
+
+translate.generate_tranlated_srt(translated_srt, srt_output)
+
+merge_subtitle.merge_subtitle(srt_output, video_input, video_output)
+
+print("All done!")

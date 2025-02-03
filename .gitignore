@@ -112,3 +112,7 @@ data/audio/input/*
 data/audio/output/*
 data/video/input/*
 data/video/output/*
+data/srt/input/*
+data/srt/output/*
+
+.DS_Store

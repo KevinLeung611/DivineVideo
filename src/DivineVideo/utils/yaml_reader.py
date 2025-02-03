@@ -1,8 +1,7 @@
 import yaml
-import os
-import sys
 
 from common.path_constants import root_dir
+
 
 def load_config():
     config_path = f"{root_dir}/conf.yaml"
