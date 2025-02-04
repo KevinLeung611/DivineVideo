@@ -1,9 +1,7 @@
 import subprocess
 
-from common.path_constants import data_dir
 from utils import yaml_reader
 
-audio_file_name = yaml_reader.load_config()['video']['input'].split('.')[0]
 
 def generate_audio_srt(audio_file, output_dir):
     model = yaml_reader.load_config()["whisper"]["model"]
@@ -24,5 +22,4 @@ def generate_audio_srt(audio_file, output_dir):
 
 
 if __name__ == "__main__":
-    audio_file = f"{data_dir}/audio/output/{audio_file_name}.wav"
-    generate_audio_srt(audio_file)
+    pass

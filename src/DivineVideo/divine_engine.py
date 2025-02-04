@@ -5,10 +5,10 @@ import merge_subtitle
 import translate
 import whisper_utils
 from common.path_constants import data_dir
+from utils import check_video_file
 from utils import sanitize_utils
-from utils import yaml_reader
 
-video_input_name = yaml_reader.load_config()["video"]["input"]
+video_input_name = check_video_file.get_videos(f"{data_dir}/video/input")[0]
 file_base_name = video_input_name.split(".")[0]
 
 video_input = os.path.join(data_dir, "video", "input", video_input_name)
