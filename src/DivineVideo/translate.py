@@ -4,7 +4,18 @@ import requests
 
 from model.srt import SRT
 from utils import sanitize_utils
+from utils import yaml_reader
+from utils.check_language_support import check_language
 
+src_lang = yaml_reader.load_config()["language"]["src_lang"]
+src_lang = 'en' if not src_lang else src_lang
+
+check_language(src_lang)
+
+target_lang = yaml_reader.load_config()["language"]["target_lang"]
+target_lang = 'zh' if not target_lang else target_lang
+
+check_language(target_lang)
 
 def translate_srt(srts: [SRT]):
     translated_srts = []
@@ -13,11 +24,11 @@ def translate_srt(srts: [SRT]):
         url = "https://api.siliconflow.cn/v1/chat/completions"
 
         payload = {
-            "model": "Qwen/Qwen2.5-7B-Instruct",
+            "model": "meta-llama/Llama-3.3-70B-Instruct",
             "messages": [
                 {
                     "role": "system",
-                    "content": "将下文翻译成中文，尽量参考上下文。如果不好翻译，可以按照意思转译。单词如果出现拼写错误，请帮忙纠正。不要额外添加无关的内容。"
+                    "content": f"Translating the following text from {src_lang} to {target_lang} simply. Don't try to explain anything to me!"
                 },
                 {
                     "role": "user",
@@ -34,6 +45,7 @@ def translate_srt(srts: [SRT]):
 
         translated_text = json.loads(response.text)["choices"][0]["message"]["content"]
 
+        print(f"Original sentence: {srt.text}")
         print(f"Tranlated sentence: {translated_text}")
 
         translated_srt = SRT(srt.index, srt.duration, f"{translated_text}\n{srt.text}")
@@ -47,7 +59,7 @@ def generate_tranlated_srt(translated_srts: [SRT], file_path):
 
 if __name__ == "__main__":
     from common.path_constants import data_dir
-    file_path = f"{data_dir}/audio/output/DeepSeek.srt"
+    file_path = f"{data_dir}/srt/output/DeepSeek R1 Explained to your grandma.srt"
     sanitized_result = sanitize_utils.sanitize_srt_file(file_path)
     translated_result = translate_srt(sanitized_result)
-    generate_tranlated_srt(translated_result, file_path)
+    # generate_tranlated_srt(translated_result, file_path)

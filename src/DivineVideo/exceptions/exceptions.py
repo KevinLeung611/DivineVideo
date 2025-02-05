@@ -1,0 +1,2 @@
+class DivineVideoException(Exception):
+    pass

@@ -1,6 +1,7 @@
 import subprocess
 
 from utils import yaml_reader
+from utils import check_language_support
 
 
 def generate_audio_srt(audio_file, output_dir):
@@ -9,6 +10,9 @@ def generate_audio_srt(audio_file, output_dir):
     output_format = yaml_reader.load_config()["whisper"]["output_format"]
 
     print(f"Executing whisper command: whisper {audio_file} --language {language} --model {model} -f {output_format} -o {output_dir}")
+
+    # 检查输入的语言是否支持
+    check_language_support.check_language(language)
 
     try:
         cmd = ["whisper", audio_file, "--language", language, "--model", model, "-f", output_format, "-o", f"{output_dir}"]

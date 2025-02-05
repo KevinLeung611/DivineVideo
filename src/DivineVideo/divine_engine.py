@@ -20,10 +20,10 @@ audio_output = os.path.join(data_dir, "audio", "output", file_base_name + ".wav"
 srt_input = os.path.join(data_dir, "srt", "input", file_base_name + ".srt")
 srt_output = os.path.join(data_dir, "srt", "output", file_base_name + ".srt")
 
-audio_extraction.extract_audio(video_input, audio_input)
-
-whisper_utils.generate_audio_srt(audio_input, os.path.join(data_dir, "srt", "input"))
-
+# audio_extraction.extract_audio(video_input, audio_input)
+#
+# whisper_utils.generate_audio_srt(audio_input, os.path.join(data_dir, "srt", "input"))
+#
 sanitized_result = sanitize_utils.sanitize_srt_file(srt_input)
 
 translated_srt = translate.translate_srt(sanitized_result)
