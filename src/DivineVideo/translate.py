@@ -21,38 +21,45 @@ def translate_srt(srts: [SRT]):
     translated_srts = []
 
     for srt in srts:
-        url = "https://api.siliconflow.cn/v1/chat/completions"
-
-        payload = {
-            "model": "meta-llama/Llama-3.3-70B-Instruct",
-            "messages": [
-                {
-                    "role": "system",
-                    "content": f"Translating the following text from {src_lang} to {target_lang} simply. Don't try to explain anything to me!"
-                },
-                {
-                    "role": "user",
-                    "content": srt.text
-                }
-            ]
-        }
-        headers = {
-            "Authorization": "Bearer sk-pwnyrdnbibbzswbntetohoydlwbetknqzlrkigimzzrmyifi",
-            "Content-Type": "application/json"
-        }
-
-        response = requests.request("POST", url, json=payload, headers=headers)
-
-        translated_text = json.loads(response.text)["choices"][0]["message"]["content"]
-
-        print(f"Original sentence: {srt.text}")
-        print(f"Tranlated sentence: {translated_text}")
+        translated_text = translate(srt.text)
 
         translated_srt = SRT(srt.index, srt.duration, f"{translated_text}\n{srt.text}")
 
         translated_srts.append(translated_srt)
 
     return translated_srts
+
+def translate(text):
+    print(f"Original sentence: {text}")
+
+    url = "https://api.siliconflow.cn/v1/chat/completions"
+
+    payload = {
+        "model": "meta-llama/Llama-3.3-70B-Instruct",
+        "messages": [
+            {
+                "role": "system",
+                "content": f"You are a professional subtitle translator and language consultant. Translating the following text from {src_lang} to {target_lang} simply and only return the translation. if target language is chinese, use simplified Chinese."
+            },
+            {
+                "role": "user",
+                "content": text
+            }
+        ]
+    }
+    headers = {
+        "Authorization": "Bearer sk-pwnyrdnbibbzswbntetohoydlwbetknqzlrkigimzzrmyifi",
+        "Content-Type": "application/json"
+    }
+
+    response = requests.request("POST", url, json=payload, headers=headers)
+
+    translated_text = json.loads(response.text)["choices"][0]["message"]["content"]
+
+    print(f"Tranlated sentence: {translated_text}")
+
+    return translated_text
+
 
 def generate_tranlated_srt(translated_srts: [SRT], file_path):
     sanitize_utils.desanitize_srt_file(translated_srts, file_path)

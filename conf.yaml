@@ -16,11 +16,11 @@ whisper:
     model: turbo
     # Whisper extracting the language
     language: en
-    # Whisper output format: srt, text
-    output_format: srt
+    # Whisper output format: subtitle, text
+    output_format: subtitle
 
 language:
     # Translating language. As same as the whisper language
     src_lang: en
     # Translate target language
-    target_lang: ja
+    target_lang: zh

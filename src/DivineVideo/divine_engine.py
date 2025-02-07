@@ -17,19 +17,19 @@ video_output = os.path.join(data_dir, "video", "output", video_input_name)
 audio_input = os.path.join(data_dir, "audio", "input", file_base_name + ".wav")
 audio_output = os.path.join(data_dir, "audio", "output", file_base_name + ".wav")
 
-srt_input = os.path.join(data_dir, "srt", "input", file_base_name + ".srt")
-srt_output = os.path.join(data_dir, "srt", "output", file_base_name + ".srt")
+subtitle_input = os.path.join(data_dir, "subtitle", "input", file_base_name + ".srt")
+subtitle_output = os.path.join(data_dir, "subtitle", "output", file_base_name + ".srt")
 
-# audio_extraction.extract_audio(video_input, audio_input)
-#
-# whisper_utils.generate_audio_srt(audio_input, os.path.join(data_dir, "srt", "input"))
-#
-sanitized_result = sanitize_utils.sanitize_srt_file(srt_input)
+audio_extraction.extract_audio(video_input, audio_input)
+
+whisper_utils.generate_audio_srt(audio_input, os.path.join(data_dir, "subtitle", "input"))
+
+sanitized_result = sanitize_utils.sanitize_srt_file(subtitle_input)
 
 translated_srt = translate.translate_srt(sanitized_result)
 
-translate.generate_tranlated_srt(translated_srt, srt_output)
+translate.generate_tranlated_srt(translated_srt, subtitle_output)
 
-merge_subtitle.merge_subtitle(srt_output, video_input, video_output)
+merge_subtitle.merge_subtitle(subtitle_output, video_input, video_output)
 
 print("All done!")
